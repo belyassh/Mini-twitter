@@ -1,0 +1,20 @@
+POST http://localhost:3000/api/register
+Content-Type: application/json
+
+{
+    "username": "alex",
+    "email": "alex@mail.com",
+    "password": "supersecretpassword"
+}
+
+### Создание твита
+POST http://localhost:3000/api/tweets
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "content": "Мой самый первый твит в новой соцсети! Всем привет!"
+}
+
+### Получение всех твитов### Получение ленты твитов
+GET http://localhost:3000/api/tweets

@@ -197,14 +197,27 @@ app.get('/api/users/:id/tweets', async (req, res) => {
     }
 });
 
-// Профиль пользователя
+// Профиль пользователя с поддержкой статистики прогнозов
 app.get('/api/users/:id/profile', async (req, res) => {
     try {
         const user = await db.get('SELECT id, username FROM users WHERE id = ?', [req.params.id]);
         if (!user) return res.status(404).json({ error: 'Не найден' });
+        
         const followersCount = await db.get('SELECT COUNT(*) as count FROM follows WHERE following_id = ?', [req.params.id]);
         const followingCount = await db.get('SELECT COUNT(*) as count FROM follows WHERE follower_id = ?', [req.params.id]);
-        res.json({ id: user.id, username: user.username, followers: followersCount.count, following: followingCount.count });
+        
+        // Заглушки под будущую таблицу прогнозов, чтобы фронтенд читал 0/0 по умолчанию
+        const winsCount = 0; 
+        const lossesCount = 0;
+
+        res.json({ 
+            id: user.id, 
+            username: user.username, 
+            followers: followersCount.count, 
+            following: followingCount.count,
+            wins: winsCount,
+            losses: lossesCount
+        });
     } catch (error) {
         res.status(500).json({ error: 'Ошибка сервера' });
     }

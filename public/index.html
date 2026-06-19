@@ -3,134 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Twitter</title>
+    <title>CYBER TWITTER & PROGNOSIS</title>
     <style>
-        /* Базовые переменные для тем (по умолчанию Темная) */
+        /* Киберспортивная Темная Тема */
         :root {
-            --bg-color: #15202b;
-            --card-bg: #192734;
-            --text-color: #fff;
-            --border-color: #38444d;
-            --text-muted: #8899a6;
-            --input-bg: #15202b;
+            --bg-color: #0b0e11; 
+            --card-bg: rgba(21, 26, 33, 0.9); 
+            --text-color: #f5f7fa;
+            --border-color: #222b36;
+            --text-muted: #7b8896;
+            --input-bg: #0b0e11;
+            --primary-color: #00ffa3; 
+            --primary-glow: rgba(0, 255, 163, 0.25);
+            --accent-red: #ff3366;
         }
 
-        /* Класс для Светлой темы */
+        /* Светлая тема */
         body.light-theme {
-            --bg-color: #e6ecf0;
-            --card-bg: #ffffff;
+            --bg-color: #ebf0f5;
+            --card-bg: rgba(255, 255, 255, 0.95);
             --text-color: #14171a;
             --border-color: #ccd6dd;
             --text-muted: #657786;
-            --input-bg: #f5f8fa;
+            --input-bg: #ffffff;
+            --primary-color: #00b371;
+            --primary-glow: rgba(0, 179, 113, 0.2);
         }
 
         body { 
-            font-family: Arial, sans-serif; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             background-color: var(--bg-color); 
             color: var(--text-color); 
             margin: 0; 
-            padding: 90px 20px 20px 20px;
+            padding: 90px 15px 30px 15px;
             transition: background-color 0.3s, color 0.3s;
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 255, 163, 0.05) 0%, transparent 70%);
         }
-        
+        body.light-theme { background-image: none; }
+
         .container { max-width: 600px; margin: 0 auto; }
-        
-        /* Хедер */
+
+        /* МИНИМАЛИСТИЧНЫЙ ХЕДЕР */
         header { 
-            position: fixed; top: 0; left: 0; right: 0; height: 60px; 
+            position: fixed; top: 0; left: 0; right: 0; height: 70px; 
             background-color: var(--card-bg); 
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
             display: flex; align-items: center; justify-content: space-between; 
             padding: 0 20px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
-            z-index: 1000;
+            z-index: 999;
             border-bottom: 1px solid var(--border-color);
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-        .header-left { display: flex; align-items: center; min-width: 120px; gap: 10px; }
-        .header-right { display: flex; align-items: center; min-width: 160px; justify-content: flex-end; gap: 10px; }
-        
-        /* Кнопка переключения темы */
-        .btn-theme-toggle {
-            background-color: transparent;
-            color: #1da1f2;
-            border: 1px solid #1da1f2;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-theme-toggle:hover {
-            background-color: rgba(29,161,242,0.1);
+            box-sizing: border-box;
         }
 
-        /* Селектор языков */
-        #language-selector {
-            padding: 8px 14px;
-            border-radius: 20px;
-            border: 2px solid #1da1f2;
-            background-color: var(--input-bg);
-            color: var(--text-color);
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-right: 10px;
+        .header-left { display: flex; align-items: center; }
+        .header-right { display: flex; align-items: center; }
+
+        /* Кнопка Бургера (теперь справа) */
+        .burger-menu-btn {
+            background: transparent; border: none; color: var(--primary-color);
+            font-size: 26px; cursor: pointer; display: flex; align-items: center;
+            padding: 5px; transition: transform 0.2s;
         }
-        #language-selector:hover {
-            background-color: rgba(29,161,242,0.15);
-            border-color: #0d8bd9;
-        }
-        #language-selector:focus {
-            outline: none;
-            border-color: #0d8bd9;
-            background-color: rgba(29,161,242,0.08);
-        }
-        #language-selector option {
+        .burger-menu-btn:hover { transform: scale(1.1); }
+
+        /* БОКОВОЕ МЕНЮ (Сайдбар справа) */
+        .sidebar {
+            position: fixed; top: 0; right: -280px; width: 280px; height: 100%;
             background-color: var(--card-bg);
-            color: var(--text-color);
-            font-size: 13px;
-            padding: 8px;
+            border-left: 1px solid var(--border-color);
+            z-index: 10000; transition: right 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+            padding: 20px; box-sizing: border-box;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
+        .sidebar.active { right: 0; }
+
+        .sidebar-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 15px;
+        }
+        .sidebar-close {
+            background: transparent; border: none; color: var(--text-muted);
+            font-size: 22px; cursor: pointer;
+        }
+        .sidebar-close:hover { color: var(--accent-red); }
+
+        /* Вкладки навигации */
+        .nav-tabs { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
+        .nav-tabs button { 
+            background: transparent; color: var(--text-muted); border: none; 
+            padding: 14px 16px; border-radius: 10px; cursor: pointer; font-weight: bold; 
+            font-size: 15px; transition: all 0.2s; text-align: left; width: 100%;
+        }
+        .nav-tabs button:hover { color: var(--text-color); background: rgba(255,255,255,0.05); }
+        body.light-theme .nav-tabs button:hover { background: rgba(0,0,0,0.05); }
+
+        .nav-tabs button.active { 
+            background-color: var(--primary-color); color: #0b0e11; 
+            box-shadow: 0 0 15px var(--primary-glow); 
+        }
+
+        /* Контейнер настроек внизу сайдбара */
+        .sidebar-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Задний фон-затемнение */
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            z-index: 9999; display: none;
+        }
+        .sidebar-overlay.active { display: block; }
+
+        /* Стилизация селекторов и кнопок темы */
+        #language-selector {
+            width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color);
+            background-color: var(--input-bg); color: var(--text-color); font-weight: bold; cursor: pointer;
+        }
+        .btn-theme-toggle {
+            width: 100%; background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color);
+            padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center;
+        }
+        .btn-theme-toggle:hover { background: var(--primary-glow); }
+
+        /* Кнопки авторизации */
+        .user-badge { background-color: var(--primary-color); color: #0b0e11; padding: 8px 14px; border-radius: 10px; font-weight: bold; font-size: 14px; }
+        .btn-login-trigger { background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 8px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn-logout { width: 100%; background-color: var(--accent-red); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center; }
+
+        /* Карточки контента */
+        .card, .tweet, .match-card { 
+            background: var(--card-bg); padding: 20px; border-radius: 16px; 
+            margin-bottom: 16px; border: 1px solid var(--border-color); 
+            box-shadow: 0 4px 25px rgba(0,0,0,0.2);
+        }
+        h2, h3 { margin-top: 0; color: var(--primary-color); text-transform: uppercase; font-size: 15px; letter-spacing: 0.5px; }
+        input, textarea { 
+            width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; 
+            border: 1px solid var(--border-color); border-radius: 10px; 
+            background-color: var(--input-bg); color: var(--text-color);
+        }
+        input:focus, textarea:focus { border-color: var(--primary-color); outline: none; }
+        button.btn-primary { 
+            background-color: var(--primary-color); color: #0b0e11; border: none; 
+            padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 12px;
+        }
+        button.btn-primary:hover { box-shadow: 0 0 15px var(--primary-glow); }
         
-        /* Элементы меню и кнопок */
-        .user-badge { background-color: #adff2f; color: #15202b; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; text-align: center; }
-        body.light-theme .user-badge { background-color: #7acc00; color: #fff; }
-
-        .btn-login-trigger { background-color: transparent; color: #1da1f2; border: 2px solid #1da1f2; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; }
-        .btn-login-trigger:hover { background-color: rgba(29,161,242,0.1); }
-        .btn-logout { background-color: #ff6b6b; color: #fff; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; }
-        .btn-logout:hover { background-color: #ff4c4c; }
-
-        /* Вкладки навигации по центру хедера */
-        .nav-tabs { display: flex; gap: 8px; }
-        .nav-tabs button { background: transparent; color: var(--text-muted); border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 14px; }
-        .nav-tabs button:hover { background-color: rgba(29,161,242,0.1); color: #1da1f2; }
-        .nav-tabs button.active { background-color: #1da1f2; color: white; }
-
-        /* Карточки и посты */
-        .card { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color); transition: background-color 0.3s, border-color 0.3s; }
-        h2, h3 { margin-top: 0; color: #1da1f2; }
-        input, textarea { width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; border: 1px solid var(--border-color); border-radius: 6px; background-color: var(--input-bg); color: var(--text-color); transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
-        input:focus, textarea:focus { border-color: #1da1f2; outline: none; }
-        
-        button.btn-primary { background-color: #1da1f2; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-        button.btn-primary:hover { background-color: #1991db; }
-
-        .tweet { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border-color); transition: background-color 0.3s, border-color 0.3s; }
-        .tweet-author { font-weight: bold; color: #1da1f2; cursor: pointer; }
-        .tweet-author:hover { text-decoration: underline; }
-        .user-stats { font-size: 11px; color: var(--text-muted); margin-left: 5px; background: var(--input-bg); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border-color); }
+        .tweet-author { font-weight: bold; color: var(--primary-color); cursor: pointer; }
         .tweet-time { font-size: 12px; color: var(--text-muted); margin-left: 10px; }
-        .tweet-content { margin-top: 8px; color: var(--text-color); margin-bottom: 10px; line-height: 1.4; }
+        .tweet-content { margin-top: 10px; color: var(--text-color); line-height: 1.5; }
+        .tweet-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 12px; margin-top: 10px; }
+        .like-btn, .predict-btn { background: var(--input-bg); color: var(--text-muted); padding: 6px 14px; font-size: 13px; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; }
         
-        .tweet-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-top: 8px; border: 1px solid var(--border-color); }
-
-        .like-btn, .reply-btn { background: var(--input-bg); color: var(--text-muted); padding: 6px 12px; font-size: 13px; border-radius: 20px; border: 1px solid var(--border-color); cursor: pointer; margin-right: 5px; transition: background-color 0.3s; }
-        .like-btn:hover { background-color: rgba(224,36,94,0.1); color: #e0245e; border-color: #e0245e; }
-        
+        /* Киберспортивные виджеты */
+        .winrate-container { display: flex; justify-content: center; margin-top: 10px; }
+        .winrate-badge { background: rgba(0, 255, 163, 0.1); color: var(--primary-color); border: 1px solid rgba(0, 255, 163, 0.3); padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; }
+        .match-card { border-left: 4px solid var(--primary-color); }
+        .match-teams { display: flex; justify-content: space-between; font-weight: bold; font-size: 15px; }
+        .match-actions { display: flex; gap: 10px; margin-top: 12px; }
+        .match-actions button { flex: 1; padding: 8px; font-weight: bold; }
         .profile-header { text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; }
         .profile-counters { display: flex; justify-content: center; gap: 20px; font-weight: bold; color: var(--text-muted); margin-top: 10px; }
     </style>
@@ -139,37 +176,52 @@
 
 <script src="i18n.js"></script>
 
-<header>
-    <div class="header-left" id="header-auth-left">
-        </div>
+<!-- Затемнение фона -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
-    <div class="nav-tabs">
-        <button id="tab-feed" class="active" onclick="switchTab('feed')">Общая лента</button>
-        <button id="tab-my-feed" onclick="switchTab('my-feed')">Моя лента</button>
-        <button id="tab-profile" onclick="viewMyProfile()">Профиль</button>
-        <button id="tab-notifications" onclick="switchTab('notifications')">Уведомления</button>
+<!-- Боковое меню (Выезжает справа) -->
+<div class="sidebar" id="sidebarMenu">
+    <div>
+        <div class="sidebar-header">
+            <h3 style="margin:0;">Меню</h3>
+            <button class="sidebar-close" onclick="toggleSidebar(false)">✕</button>
+        </div>
+        <div class="nav-tabs">
+            <button id="tab-feed" class="active" onclick="handleTabClick('feed')">💬 Лента</button>
+            <button id="tab-my-feed" onclick="handleTabClick('my-feed')">👥 Подписки</button>
+            <button id="tab-predictions" onclick="handleTabClick('predictions')">🔮 Прогнозы</button>
+            <button id="tab-profile" onclick="handleTabClick('profile-view')">👤 Профиль</button>
+            <button id="tab-notifications" onclick="handleTabClick('notifications')">🔔 Уведомления</button>
+        </div>
+    </div>
+
+    <!-- Второстепенные настройки перенесены сюда -->
+    <div class="sidebar-footer">
+        <select id="language-selector" onchange="setLanguage(this.value)">
+            <option value="ru">🇷🇺 RU</option>
+            <option value="en">🇬🇧 EN</option>
+        </select>
+        <button class="btn-theme-toggle" onclick="toggleTheme()" id="theme-btn">☀️ Light</button>
+        <div id="sidebar-logout-container"></div>
+    </div>
+</div>
+
+<!-- Верхняя панель -->
+<header>
+    <div class="header-left">
+        <!-- Слева только никнейм или кнопка авторизации -->
+        <div id="header-auth-left"></div>
     </div>
 
     <div class="header-right">
-        <select id="language-selector" onchange="setLanguage(this.value)">
-            <option value="ru">🇷🇺 Русский</option>
-            <option value="en">🇬🇧 English</option>
-            <option value="de">🇩🇪 Deutsch</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="it">🇮🇹 Italiano</option>
-            <option value="he">🇮🇱 עברית</option>
-            <option value="zh">🇨🇳 中文</option>
-            <option value="ja">🇯🇵 日本語</option>
-            <option value="uk">🇺🇦 Українська</option>
-            <option value="ko">🇰🇷 한국어</option>
-        </select>
-        <button class="btn-theme-toggle" onclick="toggleTheme()" id="theme-btn">☀️ Light</button>
-        <span id="header-auth-right"></span>
+        <!-- Кнопка меню перемещена в крайний правый угол -->
+        <button class="burger-menu-btn" onclick="toggleSidebar(true)">☰</button>
     </div>
 </header>
 
 <div class="container">
 
+    <!-- Создание поста -->
     <div id="tweet-box-section">
         <div class="card">
             <h2>Написать твит</h2>
@@ -179,6 +231,7 @@
         </div>
     </div>
 
+    <!-- Раздел Авторизации -->
     <div class="card" id="auth-section" style="display: none;">
         <h2>Вход / Регистрация</h2>
         <div>
@@ -190,16 +243,38 @@
         </div>
     </div>
 
+    <!-- Блок Ленты -->
     <div id="feed-section">
         <h2 id="feed-title">Общая лента</h2>
         <div id="tweets-feed"></div>
     </div>
 
+    <!-- Блок Прогнозов -->
+    <div id="predictions-section" style="display: none;">
+        <h2>Киберспортивные Матчи</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Сделай прогноз. Результат отобразится в твоем профиле.</p>
+        
+        <div class="match-card">
+            <div class="match-teams"><span>Natus Vincere</span><span style="color:var(--text-muted)">VS</span><span>Team Spirit</span></div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:5px;">CS2 • Сегодня, 20:00</div>
+            <div class="match-actions">
+                <button class="predict-btn" onclick="makePrediction('NAVI')">Победа NAVI</button>
+                <button class="predict-btn" onclick="makePrediction('Spirit')">Победа Spirit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Блок Профиля -->
     <div id="profile-section" style="display: none;">
         <div class="card">
             <div class="profile-header">
                 <h2 id="profile-name">@username</h2>
-                <button id="follow-btn" onclick="toggleFollow()" style="display: none; background-color: #1da1f2; color:#fff; padding: 6px 12px; border-radius: 20px; font-weight: bold; border: none; cursor: pointer;">Подписаться</button>
+                
+                <div class="winrate-container">
+                    <span class="winrate-badge" id="profile-winrate">🏆 Прогнозы: 0 / 0</span>
+                </div>
+
+                <button id="follow-btn" onclick="toggleFollow()" style="display: none; background-color: var(--primary-color); color:#0b0e11; padding: 6px 12px; border-radius: 20px; font-weight: bold; border: none; cursor: pointer; margin-top:10px;">Подписаться</button>
                 <div class="profile-counters">
                     <div>Подписчики: <span id="cnt-followers">0</span></div>
                     <div>Подписки: <span id="cnt-following">0</span></div>
@@ -210,6 +285,7 @@
         </div>
     </div>
 
+    <!-- Блок Уведомлений -->
     <div id="notifications-section" style="display: none;">
         <h2>Ваши сообщения и упоминания</h2>
         <div id="notifications-feed"></div>
@@ -222,16 +298,31 @@
     let activeProfileId = null; 
     let currentTab = 'feed';
 
-    // Инициализация языка
-    if (currentLanguage) {
-        document.getElementById('language-selector').value = currentLanguage;
+    // Управление Сайдбаром
+    function toggleSidebar(open) {
+        const sidebar = document.getElementById('sidebarMenu');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (open) {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+        } else {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
     }
 
-    // Функция переключения темы Light / Dark
+    function handleTabClick(tab) {
+        toggleSidebar(false);
+        if (tab === 'profile-view') {
+            viewMyProfile();
+        } else {
+            switchTab(tab);
+        }
+    }
+
     function toggleTheme() {
         const body = document.body;
         const btn = document.getElementById('theme-btn');
-        
         if (body.classList.contains('light-theme')) {
             body.classList.remove('light-theme');
             btn.innerText = '☀️ Light';
@@ -243,29 +334,20 @@
         }
     }
 
-    // Восстановление темы при загрузке страницы
     if (localStorage.getItem('theme') === 'light') {
         document.body.classList.add('light-theme');
         document.getElementById('theme-btn').innerText = '🌙 Dark';
     }
 
     function formatTime(dateString) {
-        const now = new Date();
-        const past = new Date(dateString);
-        const diffInSeconds = Math.floor((now - past) / 1000);
-        if (diffInSeconds < 10) return t('just-now');
-        if (diffInSeconds < 60) return `${diffInSeconds} ${t('seconds-ago')}`;
-        const diffInMinutes = Math.floor(diffInSeconds / 60);
-        if (diffInMinutes < 60) return `${diffInMinutes} ${t('minutes-ago')}`;
-        const diffInHours = Math.floor(diffInMinutes / 60);
-        if (diffInHours < 24) return `${diffInHours} ${t('hours-ago')}`;
-        return past.toLocaleDateString();
+        return new Date(dateString).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' ' + new Date(dateString).toLocaleDateString();
     }
 
     function switchTab(tab) {
         currentTab = tab;
         
         document.getElementById('feed-section').style.display = (tab === 'feed' || tab === 'my-feed') ? 'block' : 'none';
+        document.getElementById('predictions-section').style.display = tab === 'predictions' ? 'block' : 'none';
         document.getElementById('profile-section').style.display = tab === 'profile' ? 'block' : 'none';
         document.getElementById('notifications-section').style.display = tab === 'notifications' ? 'block' : 'none';
         document.getElementById('auth-section').style.display = tab === 'auth' ? 'block' : 'none';
@@ -273,15 +355,16 @@
 
         document.getElementById('tab-feed').className = tab === 'feed' ? 'active' : '';
         document.getElementById('tab-my-feed').className = tab === 'my-feed' ? 'active' : '';
+        document.getElementById('tab-predictions').className = tab === 'predictions' ? 'active' : '';
         document.getElementById('tab-profile').className = tab === 'profile' ? 'active' : '';
         document.getElementById('tab-notifications').className = tab === 'notifications' ? 'active' : '';
 
         if (tab === 'feed') {
-            document.getElementById('feed-title').innerText = t('general-feed');
+            document.getElementById('feed-title').innerText = 'Общая лента';
             loadTweets();
         }
         if (tab === 'my-feed') {
-            document.getElementById('feed-title').innerText = t('my-feed-title');
+            document.getElementById('feed-title').innerText = 'Лента подписок';
             loadMyFeed();
         }
         if (tab === 'notifications') loadNotifications();
@@ -289,14 +372,14 @@
 
     function updateAuthUI() {
         const leftAuth = document.getElementById('header-auth-left');
-        const rightAuth = document.getElementById('header-auth-right');
+        const logoutContainer = document.getElementById('sidebar-logout-container');
 
         if (currentUser) {
-            leftAuth.innerHTML = `<div class="user-badge" style="cursor:pointer;" onclick="viewMyProfile()">@${currentUser.username}</div>`;
-            rightAuth.innerHTML = `<button class="btn-logout" onclick="logout()">Выйти</button>`;
+            leftAuth.innerHTML = `<div class="user-badge" style="cursor:pointer;" onclick="handleTabClick('profile-view')">@${currentUser.username}</div>`;
+            logoutContainer.innerHTML = `<button class="btn-logout" onclick="logout()">Выйти</button>`;
         } else {
             leftAuth.innerHTML = `<button class="btn-login-trigger" onclick="switchTab('auth')">Войти</button>`;
-            rightAuth.innerHTML = '';
+            logoutContainer.innerHTML = '';
         }
     }
 
@@ -304,50 +387,39 @@
         currentUser = null;
         localStorage.removeItem('currentUser');
         updateAuthUI();
+        toggleSidebar(false);
         switchTab('feed');
     }
 
     function renderTweetsList(tweets, targetElementId, isProfileView = false) {
-        try {
-            const feed = document.getElementById(targetElementId);
-            if (!feed) {
-                console.error(`Element with ID "${targetElementId}" not found`);
-                return;
-            }
-            
-            feed.innerHTML = '';
+        const feed = document.getElementById(targetElementId);
+        if (!feed) return;
+        feed.innerHTML = '';
 
-            if(tweets.length === 0) {
-                feed.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding: 20px;">${t('no-posts')}</p>`;
-                return;
-            }
-
-            tweets.forEach(tweet => {
-                const tweetsCount = tweet.user_tweets_count !== undefined ? tweet.user_tweets_count : 0;
-                const notesCount = tweet.user_notifications_count !== undefined ? tweet.user_notifications_count : 0;
-                
-                let imgHtml = '';
-                if (tweet.image_url) {
-                    imgHtml = `<img src="${tweet.image_url}" class="tweet-img" onerror="this.style.display='none'">`;
-                }
-
-                const tweetDiv = document.createElement('div');
-                tweetDiv.className = 'tweet';
-                tweetDiv.innerHTML = `
-                    <span class="tweet-author" onclick="viewProfile(${tweet.user_id})">@${tweet.username}</span>
-                    ${!isProfileView ? `<span class="user-stats">📊 ${t('posts')}: ${tweetsCount} | 📨 ${t('notifications-count')}: ${notesCount}</span>` : ''}
-                    <span class="tweet-time">${formatTime(tweet.created_at)}</span>
-                    <div class="tweet-content">${tweet.content}</div>
-                    ${imgHtml}
-                    <div style="margin-top:10px;">
-                        <button class="like-btn" onclick="toggleLike(${tweet.id}, ${isProfileView})">❤️ ${tweet.likes_count || 0}</button>
-                    </div>
-                `;
-                feed.appendChild(tweetDiv);
-            });
-        } catch (e) {
-            console.error('Error in renderTweetsList:', e);
+        if(!tweets || tweets.length === 0) {
+            feed.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding: 20px;">Постов пока нет</p>`;
+            return;
         }
+
+        tweets.forEach(tweet => {
+            let imgHtml = '';
+            if (tweet.image_url) {
+                imgHtml = `<img src="${tweet.image_url}" class="tweet-img" onerror="this.style.display='none'">`;
+            }
+
+            const tweetDiv = document.createElement('div');
+            tweetDiv.className = 'tweet';
+            tweetDiv.innerHTML = `
+                <span class="tweet-author" onclick="viewProfile(${tweet.user_id})">@${tweet.username}</span>
+                <span class="tweet-time">${formatTime(tweet.created_at)}</span>
+                <div class="tweet-content">${tweet.content}</div>
+                ${imgHtml}
+                <div style="margin-top:10px;">
+                    <button class="like-btn" onclick="toggleLike(${tweet.id}, ${isProfileView})">❤️ ${tweet.likes_count || 0}</button>
+                </div>
+            `;
+            feed.appendChild(tweetDiv);
+        });
     }
 
     async function loadTweets() {
@@ -360,7 +432,7 @@
 
     async function loadMyFeed() {
         if (!currentUser) {
-            document.getElementById('tweets-feed').innerHTML = `<p style="text-align:center; color:var(--text-muted); padding: 20px;">${t('login-to-feed')}</p>`;
+            document.getElementById('tweets-feed').innerHTML = `<p style="text-align:center; color:var(--text-muted); padding: 20px;">Войдите, чтобы увидеть подписки</p>`;
             return;
         }
         try {
@@ -372,54 +444,38 @@
 
     async function viewProfile(userId) {
         activeProfileId = userId;
-        
         try {
             const resProf = await fetch(`${API_URL}/users/${userId}/profile`);
             const profile = await resProf.json();
             
-            // Switch tab AFTER fetching to ensure elements exist
             switchTab('profile');
             
-            // Small delay to ensure DOM is ready
-            await new Promise(r => setTimeout(r, 50));
-            
-            // Use safer element access with null checks
-            const profileNameEl = document.getElementById('profile-name');
-            const cntFollowersEl = document.getElementById('cnt-followers');
-            const cntFollowingEl = document.getElementById('cnt-following');
-            
-            if (profileNameEl) profileNameEl.innerText = `@${profile.username}`;
-            if (cntFollowersEl) cntFollowersEl.innerText = profile.followers;
-            if (cntFollowingEl) cntFollowingEl.innerText = profile.following;
-
-            // Update profile section heading
-            const profileH3 = document.querySelector('#profile-section h3');
-            if (profileH3) profileH3.textContent = t('user-posts');
+            document.getElementById('profile-name').innerText = `@${profile.username}`;
+            document.getElementById('cnt-followers').innerText = profile.followers;
+            document.getElementById('cnt-following').innerText = profile.following;
+            document.getElementById('profile-winrate').innerText = `🏆 Прогнозы: ${profile.wins || 0} / ${profile.losses || 0}`;
 
             const followBtn = document.getElementById('follow-btn');
-            if (followBtn) {
-                if (currentUser && currentUser.id !== userId) {
-                    followBtn.style.display = 'inline-block';
-                    followBtn.textContent = t('follow-btn');
-                } else {
-                    followBtn.style.display = 'none';
-                }
+            if (currentUser && currentUser.id !== userId) {
+                followBtn.style.display = 'inline-block';
+                followBtn.textContent = 'Подписаться';
+            } else {
+                followBtn.style.display = 'none';
             }
 
             const resTweets = await fetch(`${API_URL}/users/${userId}/tweets`);
             const tweets = await resTweets.json();
-            console.log('Profile tweets fetched:', tweets.length, 'tweets');
             renderTweetsList(tweets, 'profile-tweets', true);
-        } catch (e) { console.error('Error loading profile:', e); }
+        } catch (e) { console.error(e); }
     }
 
     function viewMyProfile() {
-        if (!currentUser) return alert(t('alert-login-profile'));
+        if (!currentUser) return alert('Пожалуйста, авторизуйтесь');
         viewProfile(currentUser.id);
     }
 
     async function toggleFollow() {
-        if (!currentUser) return alert(t('alert-login-follow'));
+        if (!currentUser) return alert('Пожалуйста, авторизуйтесь');
         await fetch(`${API_URL}/follow`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -430,7 +486,7 @@
 
     async function loadNotifications() {
         if (!currentUser) {
-            document.getElementById('notifications-feed').innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted);">${t('login-to-comment')}</p>`;
+            document.getElementById('notifications-feed').innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted);">Войдите для просмотра уведомлений</p>`;
             return;
         }
         try {
@@ -440,18 +496,17 @@
             feed.innerHTML = '';
 
             if (notes.length === 0) {
-                feed.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted);">${t('no-mentions')}</p>`;
+                feed.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted);">Упоминаний нет</p>`;
                 return;
             }
 
             notes.forEach(note => {
                 const div = document.createElement('div');
                 div.className = 'tweet';
-                div.style.borderLeft = '4px solid #1da1f2';
                 div.innerHTML = `
-                    <p>${t('mentioned-you')} <span class="tweet-author" onclick="viewProfile(${note.author_id})">@${note.username}</span>:</p>
+                    <p>Вас упомянул <span class="tweet-author" onclick="viewProfile(${note.author_id})">@${note.username}</span>:</p>
                     <div class="tweet-content"><em>${note.content}</em></div>
-                    <button class="reply-btn" onclick="replyTo('${note.username}')">↩️ ${t('reply')}</button>
+                    <button class="reply-btn" onclick="replyTo('${note.username}')">↩️ Ответить</button>
                 `;
                 feed.appendChild(div);
             });
@@ -465,7 +520,7 @@
     }
 
     async function toggleLike(tweetId, isProfile = false) {
-        if (!currentUser) return alert(t('alert-login-like'));
+        if (!currentUser) return alert('Нужно войти в систему');
         await fetch(`${API_URL}/likes`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -477,10 +532,10 @@
     }
 
     async function createTweet() {
-        if (!currentUser) return alert(t('alert-login-tweet'));
+        if (!currentUser) return alert('Авторизуйтесь перед публикацией');
         const content = document.getElementById('tweet-content').value;
         const image_url = document.getElementById('tweet-image').value;
-        if (!content) return alert(t('alert-empty-tweet'));
+        if (!content) return alert('Введите текст твита');
 
         await fetch(`${API_URL}/tweets`, {
             method: 'POST',
@@ -492,6 +547,13 @@
         if (currentTab === 'my-feed') loadMyFeed(); else loadTweets();
     }
 
+    function makePrediction(team) {
+        if (!currentUser) return alert('Сначала авторизуйтесь!');
+        document.getElementById('tweet-content').value = `🔮 Мой киберпрогноз на матч NAVI vs Spirit: Победа команды ${team}! #cyberprognosis`;
+        switchTab('feed');
+        createTweet();
+    }
+
     async function register() {
         const username = document.getElementById('reg-username').value;
         const email = document.getElementById('reg-email').value;
@@ -501,39 +563,31 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password })
         });
-        if (response.ok) {
-            login(email, password);
-        } else {
-            alert((await response.json()).error);
-        }
+        if (response.ok) { login(email, password); } else { alert((await response.json()).error); }
     }
 
     async function login(emailParam, passwordParam) {
         const email = emailParam || document.getElementById('reg-email').value;
         const password = passwordParam || document.getElementById('reg-password').value;
-        
         try {
             const response = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
             });
-
             if (response.ok) {
                 const data = await response.json();
                 currentUser = data.user;
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 updateAuthUI();
                 switchTab('feed');
-            } else {
-                alert((await response.json()).error);
-            }
+            } else { alert((await response.json()).error); }
         } catch(e) { console.error(e); }
     }
 
     loadTweets();
     updateAuthUI();
-    updatePageLanguage();
+
     setInterval(() => {
         if (currentTab === 'feed') loadTweets();
         if (currentTab === 'my-feed') loadMyFeed();
